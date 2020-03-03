@@ -197,7 +197,10 @@ def calculateHandlen(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
-    # TO DO... <-- Remove this comment when you code this function
+    total = 0
+    for key in hand:
+        total += hand[key]
+    return total
 
 
 
@@ -225,31 +228,45 @@ def playHand(hand, wordList, n):
     """
     # BEGIN PSEUDOCODE <-- Remove this comment when you code this function; do your coding within the pseudocode (leaving those comments in-place!)
     # Keep track of the total score
+    total_score = 0
 
     # As long as there are still letters left in the hand:
-
+    while calculateHandlen(hand) > 0:
         # Display the hand
+        hand_rep = ""
+        for letter in hand.keys():
+            for j in range(hand[letter]):
+                hand_rep += letter + " "
+        print('Current Hand: ', hand_rep)
 
         # Ask user for input
+        user_word = input('Enter word, or a "." to indicate that you are finished: ')
 
         # If the input is a single period:
+        if user_word == '.':
+            break
 
             # End the game (break out of the loop)
 
-
+        else:
         # Otherwise (the input is not a single period):
-
+            if isValidWord(user_word, hand, wordList) == False:
             # If the word is not valid:
-
+                print("Invalid word, please try again.\n")
                 # Reject invalid word (print a message followed by a blank line)
-
+            else:
             # Otherwise (the word is valid):
-
+                word_score = getWordScore(user_word, n)
+                total_score += word_score
+                print('"%s" earned %d points. Total: %d points\n'%(user_word, word_score, total_score))
                 # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
+                hand = updateHand(hand, user_word)
 
                 # Update the hand
-
-
+    if user_word == ".":
+        print('Goodbye! Total score: %d points'%(total_score))
+    else:
+        print('Run out of letters. Total score: %d points'%(total_score))
     # Game is over (user entered a '.' or ran out of letters), so tell user the total score
 
 
