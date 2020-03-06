@@ -206,7 +206,10 @@ class CiphertextMessage(Message):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        super().__init__(text)
+        self.message_text = self.get_message_text()
+        self.valid_words = load_words('words.txt')
+
 
     def decrypt_message(self):
         '''
@@ -224,7 +227,26 @@ class CiphertextMessage(Message):
         Returns: a tuple of the best shift value used to decrypt the message
         and the decrypted message text using that shift value
         '''
-        pass #delete this line and replace with your code here
+        word_list = self.message_text.split(' ')
+        original_text = self.message_text
+        count = 0
+        best_shift = 0
+        for s in range(0, 25):
+            shifted = 26 - s
+            valid_word_list = []
+            for word in word_list:
+                self.message_text = word
+                out = self.apply_shift(shifted)
+                if out in self.valid_words:
+                    valid_word_list.append(out)
+            if len(valid_word_list) > count:
+                count = len(valid_word_list)
+                best_shift = shifted
+        self.message_text = original_text
+        decrypted = self.apply_shift(best_shift)
+        return best_shift, decrypted
+
+
 
 #Example test case (PlaintextMessage)
 plaintext = PlaintextMessage('hello', 2)
@@ -232,6 +254,7 @@ print('Expected Output: jgnnq')
 print('Actual Output:', plaintext.get_message_text_encrypted())
     
 #Example test case (CiphertextMessage)
-ciphertext = CiphertextMessage('jgnnq')
+# ciphertext = CiphertextMessage('jgnnq')
+ciphertext = CiphertextMessage('uftu, uijt jt pomz b uftu')
 print('Expected Output:', (24, 'hello'))
 print('Actual Output:', ciphertext.decrypt_message())
