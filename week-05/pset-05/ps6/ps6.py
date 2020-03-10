@@ -247,6 +247,10 @@ class CiphertextMessage(Message):
         return best_shift, decrypted
 
 
+def decrypt_story():
+    story = get_story_string()
+    ciphertext = CiphertextMessage(story)
+    return ciphertext.decrypt_message()
 
 #Example test case (PlaintextMessage)
 plaintext = PlaintextMessage('hello', 2)
@@ -258,3 +262,8 @@ print('Actual Output:', plaintext.get_message_text_encrypted())
 ciphertext = CiphertextMessage('uftu, uijt jt pomz b uftu')
 print('Expected Output:', (24, 'hello'))
 print('Actual Output:', ciphertext.decrypt_message())
+
+print(decrypt_story())
+
+
+
